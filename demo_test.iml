@@ -23,7 +23,7 @@
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
-          <factory-entry name="NewPersistenceUnit" />
+          <factory-entry name="defalutPersistenceUnit" />
           <factory-entry name="defaultPersistenceUnit" />
           <factory-entry name="noname-a.xml@0" value="b8b32ce8-4e5b-415a-8945-c7ad97a7b1da" />
         </datasource-mapping>
@@ -75,5 +75,6 @@
     <orderEntry type="library" name="Maven: org.aspectj:aspectjrt:1.7.2" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.slf4j:jcl-over-slf4j:1.7.1" level="project" />
+    <orderEntry type="library" name="Maven: mysql:mysql-connector-java:5.1.38" level="project" />
   </component>
 </module>
