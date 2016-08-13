@@ -60,6 +60,7 @@ public class BlogController {
         logger.debug(blogEntity.getUserByUserId().getNickname()+" debug");
         logger.error(blogEntity.getUserByUserId().getNickname()+" error");
 
+
         blogRepository.saveAndFlush(blogEntity);
         return "redirect:blogs";
     }
