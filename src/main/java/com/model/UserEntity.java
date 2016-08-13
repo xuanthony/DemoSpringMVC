@@ -1,6 +1,7 @@
 package com.model;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 /**
  * @（#）:UserEntity
@@ -16,6 +17,7 @@ public class UserEntity {
     private String password;
     private String firstName;
     private String lastName;
+    private Collection<BlogEntity> blogsById;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -91,5 +93,14 @@ public class UserEntity {
         result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
         result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
         return result;
+    }
+
+    @OneToMany(mappedBy = "userByUserId")
+    public Collection<BlogEntity> getBlogsById() {
+        return blogsById;
+    }
+
+    public void setBlogsById(Collection<BlogEntity> blogsById) {
+        this.blogsById = blogsById;
     }
 }
