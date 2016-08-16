@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+
+    <!--
+        激活标注，如：@Required @Autowired @PostConstruct @Resource 等
+        需要xmlns:context=".../context"那个命名空间
+        注意：
+            context:annotation-config这个配置，
+            实质作用是用来注入bean类，如@Resource、@PostConstruct、@PreDestroy等注解所需要的bean，
+            而<context:component-scan base-package="pack.pack"/>这个配置，
+            其实也有自动注入这些bean的功能，
+            按理说，配置了scan之后，就不用配置config这个了。
+
+            具体了解：http://www.cnblogs.com/iuranus/archive/2012/07/19/2599084.html
+        -->
+    <context:annotation-config/>
+
+    <!-- Dispatcher上下文，只搜索@Controller 标注的类，不搜索其他标注的类 -->
+    <context:component-scan base-package="com.controller">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+    </context:component-scan>
+
+    <!--
+        扩充了注解驱动，可以将请求参数绑定到控制器参数
+        注：
+            需要加入命名空间xmlns:mvc="http://www.springframework.org/schema/mvc"，
+            自动注册DefaultAnnotationHandlerMapping 与 AnnotationMethodHandlerAdapter 两个bean
+            并提供了：数据绑定支持，@NumberFormatannotation支持，@DateTimeFormat支持，@Valid支持，读写XML的支持（JAXB），读写JSON的支持（Jackson）
+
+            具体了解：http://kingliu.iteye.com/blog/1972973
+        -->
+    <mvc:annotation-driven/>
+
+    <!--
+        容器默认的DefaultServletHandler处理 所有静态内容与无RequestMapping处理的URL
+        servlet在找页面时，走的是dispatcherServlet路线。找不到的时候会报404。加上这个默认的servlet时候，servlet在找不到的时候会去找静态的内容。
+
+        另外有一种方法访问静态文件
+            在web.xml中，配置dispatcherServlet时，拦截的请求若是"/"，那么所有请求都会被拦截，包括 .do .jsp .js .css等，
+            拦截到了.do可以被访问到，但是找静态文件的时候就找不到了。
+            所有可以把拦截的请求改成"*.do"，表示拦截所有.do的请求。这样就可以访问.js .css等静态文件了
+
+        具体了解：http://blog.csdn.net/cq1982/article/details/44101761
+    -->
+    <mvc:default-servlet-handler/>
+
+    <!-- 定义JSP文件的位置 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsps/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!-- 表示JPA Repository所在的包 -->
+    <jpa:repositories base-package="com.repository"/>
+
+    <!-- 链接到persistence.xml -->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
+        <property name="persistenceUnitName" value="defaultPersistenceUnit"/>
+    </bean>
+
+    <!-- 事务管理 -->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+
+    <!-- 开启事务管理注解 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8"></property>
+        <property name="maxUploadSize" value="102400000"></property>
+        <property name="maxInMemorySize" value="102400000"></property>
+    </bean>
+</beans>
