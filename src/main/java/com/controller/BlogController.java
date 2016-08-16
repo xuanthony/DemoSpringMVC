@@ -56,10 +56,9 @@ public class BlogController {
         logger.info(blogEntity.getTitle()+" info");
         logger.debug(blogEntity.getTitle()+" debug");
         logger.error(blogEntity.getTitle()+" error");
-        logger.info(blogEntity.getUserByUserId().getNickname()+" info");
-        logger.debug(blogEntity.getUserByUserId().getNickname()+" debug");
-        logger.error(blogEntity.getUserByUserId().getNickname()+" error");
-
+//        logger.info(blogEntity.getUserByUserId().getNickname()+" info");
+//        logger.debug(blogEntity.getUserByUserId().getNickname()+" debug");
+//        logger.error(blogEntity.getUserByUserId().getNickname()+" error");
 
         blogRepository.saveAndFlush(blogEntity);
         return "redirect:blogs";

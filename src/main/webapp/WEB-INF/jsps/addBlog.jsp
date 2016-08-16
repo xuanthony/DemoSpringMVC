@@ -43,7 +43,7 @@
         </div>
         <div class="form-group">
             <label for="pubDate">Publish Date:</label>
-            <input type="date" class="form-control" id="pubDate" name="pubDate"/>
+            <input type="datetime" class="form-control" id="pubDate" name="pubDate"/>
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-sm btn-success">提交</button>
